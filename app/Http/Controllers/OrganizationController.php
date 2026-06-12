@@ -87,4 +87,11 @@ class OrganizationController extends Controller
 
         return response()->json($userOrganization, 200);
     }
+
+    public function users(Organization $organization)
+    {
+        $users = $organization->users()->select('users.id', 'users.nickname', 'users.email')->get();
+        // $users = $organization->users;
+        return response()->json($users, 200);
+    }
 }
