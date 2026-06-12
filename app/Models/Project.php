@@ -3,15 +3,23 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 
 use App\Models\Tasks;
+use App\Models\Organization;
 
-#[Fillable(['project_name', 'project_description', 'project_status'])]
+#[Fillable(['project_name', 'project_description', 'organization_id'])]
 
 class Project extends Model
 {
-    // public function tasks(): hasMany
-    // {
-    //     return $this->hasMany(Tasks:Class, 'task_id');
-    // }
+    public function owner_organization(): BelongsTo
+    {
+        return $this->belongsTo(Organization::class, 'organization_id');
+    }
+
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(Tasks::Class, 'project_id');
+    }
 }

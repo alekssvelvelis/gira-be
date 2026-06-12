@@ -19,7 +19,7 @@ class OrganizationController extends Controller
         ]);
 
         $file = $validated['organization_picture'];
-        $extension = $file->extension();
+        $extension = $file->getClientOriginalExtension();
         $filename = 'org_' . $validated['organization_identifier'] . '.' . $extension;
         $path = $file->storeAs('organizations', $filename, 'public');
 
