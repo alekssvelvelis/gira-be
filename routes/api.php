@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TasksController;
+use App\Http\Controllers\UserController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -29,5 +30,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/organizations/{organization}/projects/{project}/tasks', [TasksController::class, 'index']);
     Route::put('/organizations/{organization}/projects/{project}/tasks/{task}', [TasksController::class, 'update']);
     Route::get('/organizations/{organization}/projects/{project}/tasks/{task}', [TasksController::class, 'show']);
+
+    Route::get('/users/{user}', [UserController::class, 'show']);
+    Route::get('/userOrganizations', [UserController::class, 'userOrganization']);
 });
 
