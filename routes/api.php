@@ -8,6 +8,7 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TasksController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\InvitationController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -31,7 +32,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/organizations/{organization}/projects/{project}/tasks/{task}', [TasksController::class, 'update']);
     Route::get('/organizations/{organization}/projects/{project}/tasks/{task}', [TasksController::class, 'show']);
 
-    Route::get('/users/{user}', [UserController::class, 'show']);
+    Route::get('/users/{user}/self', [UserController::class, 'show']);
+    Route::get('/users/{user}', [UserController::class, 'index']);
     Route::get('/userOrganizations', [UserController::class, 'userOrganization']);
+    Route::put('/users/{user}/edit', [UserController::class, 'update']);
+
+    Route::post('/organizations/{organization}/invite', [InvitationController::class, 'store']);
+    Route::post('/invitations/{token}/accept', [InvitationController::class, 'accept']);
 });
 

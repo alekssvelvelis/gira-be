@@ -67,11 +67,17 @@ class ProjectController extends Controller
         $isMember = $request->user()
             ->organizations()
             ->where('organization_id', $organization->id)
+            ->with('owner:id,name,email')
             ->exists();
         abort_if(!$isMember, 403, 'Unauthorized');
 
         abort_if($project->organization_id !== $organization->id, 404);
 
-        return response()->json($project, 200);
+        $project->load('owner_organization.owner:id,name,email');
+
+        return response()->json([
+            'project' => $project,
+            'is_owner' => $organization->owner_id === $request->user()->id,
+        ], 200);
     }
 }

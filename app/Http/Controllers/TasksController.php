@@ -72,7 +72,7 @@ class TasksController extends Controller
 
         abort_if($project->organization_id !== $organization->id, 404);
 
-        $tasks = $project->tasks()->with(['assignee'])->get();
+        $tasks = $project->tasks()->with(['assignee:id,nickname,email,profile_picture'])->get();
 
         return response()->json($tasks, 200);
     }
@@ -87,6 +87,14 @@ class TasksController extends Controller
 
         abort_if($project->organization_id !== $organization->id, 404, 'Project does not belong to organization');
         // return response()->json(['message' => 'returned']);
-        return response()->json($task, 200);
+        $task->load([
+            'assignee:id,nickname,email,profile_picture',
+            'project:id,project_name',
+        ]);
+
+        return response()->json([
+            'task' => $task, 
+            'is_owner' => $organization->owner_id === $request->user()->id || $request->user()->id === $task->assignee_id
+        ], 200);
     }
 }

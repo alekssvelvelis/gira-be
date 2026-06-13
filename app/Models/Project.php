@@ -16,7 +16,7 @@ class Project extends Model
 {
     public function owner_organization(): BelongsTo
     {
-        return $this->belongsTo(Organization::class, 'id');
+        return $this->belongsTo(Organization::class, 'organization_id');
     }
 
     public function tasks(): HasMany
