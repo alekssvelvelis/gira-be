@@ -97,4 +97,14 @@ class TasksController extends Controller
             'is_owner' => $organization->owner_id === $request->user()->id || $request->user()->id === $task->assignee_id
         ], 200);
     }
+
+    public function destroy(Request $request, Organization $organization, Project $project, Tasks $task)
+    {
+        $taskToDelete = Tasks::find($task->id);
+        $taskToDelete->delete();
+
+        return response()->json([
+            'message' => 'Task has been deleted',
+        ], 200);
+    }
 }

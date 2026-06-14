@@ -66,9 +66,34 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function userOrganization(Request $request)
+    public function userOrganization(Request $request, $userId)
     {
-        $organizations = $request->user()->organizations;
-        return response()->json($organizations);
+        $user = User::findOrFail($userId);
+        return response()->json($user->organizations()->get());
+    }
+
+    public function specificUserTasks(Request $request, User $user)
+    {
+        $tasks = $user->tasks()
+        ->with([
+            'assignee:id,nickname,email,profile_picture',
+            'project:id,organization_id'
+        ])
+        ->get();
+        return response()->json([
+            'tasks' => $tasks,
+            'message' => 'User tasks'
+        ], 200);
+    }
+
+    public function destroy(Request $request, User $user)
+    {   
+
+        \Storage::disk('public')->delete($user->profile_picture);
+        $user->delete();
+
+        return response()->json([
+            'message' => 'User has been deleted',
+        ], 200);
     }
 }

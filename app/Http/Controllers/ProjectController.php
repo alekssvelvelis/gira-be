@@ -80,4 +80,14 @@ class ProjectController extends Controller
             'is_owner' => $organization->owner_id === $request->user()->id,
         ], 200);
     }
+
+    public function destroy(Request $request, Organization $organization, Project $project)
+    {
+        $projectToDelete = Project::find($project->id);
+        $projectToDelete->delete();
+
+        return response()->json([
+            'message' => 'Project has been deleted',
+        ], 200);
+    }
 }

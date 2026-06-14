@@ -94,4 +94,17 @@ class OrganizationController extends Controller
         // $users = $organization->users;
         return response()->json($users, 200);
     }
+
+    public function destroy(Request $request, Organization $organization)
+    {
+        $organizationOwner = $organization->owner_id;
+        if ($request->user()->id === $organizationOwner) {
+            \Storage::disk('public')->delete($organization->organization_picture);
+            $organization->delete();
+        }
+
+        return response()->json([
+            'message' => 'Organization has been deleted',
+        ], 200);
+    }
 }

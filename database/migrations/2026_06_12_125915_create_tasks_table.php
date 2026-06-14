@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('task_type');
             $table->date('due_date');
             $table->integer('priority')->default(1);
-            $table->foreignId('assignee_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('assignee_id')->constrained('users')->nullOnDelete();
             $table->foreignId('project_id')->constrained('projects')->cascadeOnDelete();
             $table->timestamps();
         });
